@@ -16,10 +16,13 @@ require "/usr/local/lib/bclib.pl";
 
 $file = "/usr/local/etc/kevin59/files/bcunix-files.txt";
 
-my($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
-$atime,$mtime,$ctime,$blksize,$blocks) = stat($file);
+my($dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $size, $atime,
+$mtime, $ctime, $blksize, $blocks) = stat($file);
 
-# the minimum of file times minus a day, in "touch" format
-my($touch) = strftime("%Y%m%d%H%M", gmtime(min($mtime,$ctime,$atime)-86400));
+# the minimum of file times minus a day
+my($touchtime) = min($mtime, $ctime, $atime)-86400;
+system("touch -d \@$touchtime /tmp/buf.timestamp");
 
-system("touch -t $touch /tmp/buf.timestamp");
+# is this faster than dumping the whole fs? (testing in oneliners.sh)
+
+
