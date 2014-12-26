@@ -14,6 +14,13 @@ require "/usr/local/lib/bclib.pl";
 # TODO: decide if I want to keep these files bzip'd or not
 # TODO: do this for reverse file search thing too
 
+# TODO: when running find command, use -type f, exclude /dev/ /tmp/
+# /sys/ and maybe others
+
+# TODO: do NOT descend into other disks (especially sshfs mounted
+# ones), since it's more efficient to run "find -newer" on remote
+# machines
+
 $file = "/usr/local/etc/kevin59/files/bcunix-files.txt";
 
 my($dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $size, $atime,
@@ -24,5 +31,6 @@ my($touchtime) = min($mtime, $ctime, $atime)-86400;
 system("touch -d \@$touchtime /tmp/buf.timestamp");
 
 # is this faster than dumping the whole fs? (testing in oneliners.sh)
+# ANSWER: Yes, it's several times faster to use -newer
 
 
